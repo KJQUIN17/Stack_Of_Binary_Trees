@@ -5,48 +5,44 @@
 #define MAXSIZE 8
 
 struct bin_tree{ // Binary Tree
-int data;
-struct bin_tree * right, * left;
+    int data;
+    struct bin_tree * right, * left;
 };
-
 typedef struct bin_tree node;
 
 typedef struct stack_element{
     char name;
     node *root;
- 
 } stack_element;
 
 struct stack{ // Stack
     stack_element stk[MAXSIZE];
     int top;
 };
+typedef struct stack stack;
 
-typedef struct stack STACK;
-STACK s;
+stack s;  // initialize stack s
 
 void insert(node ** tree, int val);
  
 /*  Function to add an element to the stack */
 void push (){
-    char num;
+    char name;
     stack_element new_element;
     node *bst_root;
     bst_root = NULL;
 
     if (s.top == (MAXSIZE - 1)){
-
         printf ("Stack is Full\n");
         return;
 
     }else{
-
         printf ("Enter the element to be pushed\n");
         getchar(); // To consume the newline
-        num = getchar();
+        name = getchar();
         s.top = s.top + 1;
 
-        new_element.name = num;
+        new_element.name = name;
         insert(&bst_root, 8);
         new_element.root = bst_root;
         s.stk[s.top] = new_element;
@@ -59,20 +55,17 @@ void push (){
 
 /*  Function to delete an element from the stack */
 int pop (){
-    char num;
+    char name;
     if (s.top == - 1){
-
         printf ("Stack is Empty\n");
         return (s.top);
 
     }else{
-
-        num = s.top;
-        printf ("poped element is = %c", s.stk[s.top]);
+        name = s.top;
+        printf ("poped element is = %c\n", s.stk[s.top]);
         s.top = s.top - 1;
     }
-    return(num);
-
+    return(name);
 } // end pop
 
 /*  Function to display the status of the stack */
@@ -80,27 +73,22 @@ int pop (){
 void display (){
     int i;
     if (s.top == -1){
-
         printf ("Stack is empty\n");
         return;
 
     }else{
-
         printf ("\n The status of the stack is \n");
         for (i = s.top; i >= 0; i--){
-
             printf ("%c\n", s.stk[i]);
         }
     }
     printf ("\n");
-
 } // end display
 
 void insert(node ** tree, int val){
 
     node *temp = NULL;
     if(!(*tree)){
-
         temp = (node *)malloc(sizeof(node));
         temp->left = temp->right = NULL;
         temp->data = val;
@@ -109,11 +97,10 @@ void insert(node ** tree, int val){
     }
 
     if(val < (*tree)->data){
-
         insert(&(*tree)->left, val);
     }
-    else if(val > (*tree)->data){
 
+    else if(val > (*tree)->data){
         insert(&(*tree)->right, val);
     }
 
@@ -142,6 +129,7 @@ node* search(node ** tree, int val){
         search(&((*tree)->right), val);
     }
     else if(val == (*tree)->data){
+        printf("found");
         return *tree;
     }
 
@@ -180,10 +168,11 @@ void menu(){
 main(){
 
     char input;
+    int input_tree;
     s.top = -1;
 
     node *root;
-    node *tmp;
+    /* node *tmp; */
     root = NULL;
 
     while(1){
@@ -199,8 +188,14 @@ main(){
             pop();
             break;
         case 'A':
+            printf ("Enter the element to be inserted.\n");
+            scanf("%d", &input_tree);
+            insert(&root, input_tree);
             break;
         case 'S':
+             printf ("Enter the element to be searched.\n");
+            scanf("%d", &input_tree);
+            search(&root, input_tree);
             break;
         case 'Q':
             return 0; // Quit Program Sucessfully
