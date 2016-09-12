@@ -24,6 +24,17 @@ typedef struct stack stack;
 stack s;  // initialize stack s
 
 void insert(node ** tree, int val);
+
+void init(){
+    node *root = NULL;
+    stack_element new_element;
+    s.top = s.top + 1;
+    new_element.name = 'O';
+    insert(&root, 8);
+    new_element.root = root;
+    s.stk[s.top] = new_element;
+
+} // end init
  
 /*  Function to add an element to the stack */
 void push (){
@@ -129,7 +140,7 @@ node* search(node ** tree, int val){
         search(&((*tree)->right), val);
     }
     else if(val == (*tree)->data){
-        printf("found");
+        printf("\n found \n");
         return *tree;
     }
 
@@ -174,9 +185,10 @@ main(){
     node *root;
     /* node *tmp; */
     root = NULL;
+    init();
+    print_postorder(root); // stack not init 'O' = 8 correctly.
 
     while(1){
-
         menu();
         scanf("%c", &input);
 
@@ -193,7 +205,7 @@ main(){
             insert(&root, input_tree);
             break;
         case 'S':
-             printf ("Enter the element to be searched.\n");
+            printf ("Enter the element to be searched.\n");
             scanf("%d", &input_tree);
             search(&root, input_tree);
             break;

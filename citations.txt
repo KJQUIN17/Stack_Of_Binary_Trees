@@ -1,0 +1,9 @@
+Web-Links Utilized:
+
+http://www.sanfoundry.com/c-program-stack-implementation/
+http://www.thegeekstuff.com/2013/02/c-binary-tree/
+http://cboard.cprogramming.com/c-programming/128884-scanf-blank-input.html
+http://stackoverflow.com/questions/14419954/reading-a-single-character-in-c
+http://stackoverflow.com/questions/16464390/getting-request-for-member-not-a-structure-or-union-error
+http://www.c4learn.com/c-programming/c-nested-structure/
+http://stackoverflow.com/questions/2184419/what-does-request-for-member-in-something-not-a-structure-or-union-m
