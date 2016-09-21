@@ -1,7 +1,7 @@
 /***
     Kyle Quinn
     CSCI 364 - Compiler Construction
-    binary_tree.c
+    mod_binary_tree.c
 
     I Worked on this project with Alex Voitik. We discussed the implementation strategies for this project. Furthermore, we addressed eachother's errors as needed.
 
@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXSIZE 8
+#define MAXSIZE 8  // subject to change!
 
 typedef struct bin_tree{ // Binary Tree
     int data;
@@ -17,32 +17,18 @@ typedef struct bin_tree{ // Binary Tree
     struct bin_tree * left;
 }node;
 
-
 typedef struct stack_element{
-    char name;
-    node *root;
+    char name; //name attribute
+    node *root; // root attribute
 }stack_element;
 
-struct stack{ // Stack
-    stack_element stk[MAXSIZE];
-    int top;
+struct stack{
+    stack_element stk[MAXSIZE]; // initialize stack and size
+    int top;  // stack attribute top
 };
 typedef struct stack stack;
-
 stack s;  // initialize stack s
 
-/* node * insert(node *tree, int val);  // ********************************* */
-
-void init(){
-    stack_element new_element;
-    node *root = 0;
-    s.top = s.top + 1;
-    new_element.name = 'o';
-    new_element.root = 0;
-    s.stk[s.top] = new_element;
-
-} // end init
- 
 /*  Function to add an element to the stack */
 void push (){
     char name;
@@ -55,12 +41,11 @@ void push (){
 
     }else{
         printf ("Enter the element to be pushed\n");
-
         getchar(); // To consume the newline
         name = getchar();
         new_element.name = name;
         s.top = s.top + 1;
-        new_element.root = bst_root;
+        new_element.root = 0;
         s.stk[s.top] = new_element;
     }
 
@@ -102,7 +87,7 @@ void display (){
 
 node * insert(node *tree, int val){
 
-    if(!(tree)){
+    if(tree == 0){
         node *temp;
         temp = (node *)malloc(sizeof(node));
         temp -> left = temp->right = NULL;
@@ -133,23 +118,17 @@ void deltree(node * tree){
 } // end deltree
 
 node * search(node *tree, int val){
-    if(!(tree)){
-        return NULL;
+    if(tree != 0){
+        if(val == tree->data){
+            return tree;
+        }
+        else if(val < tree->data){
+            return search(tree->left, val);
+        }else{
+            return search(tree->right, val);
+        }
     }
-
-    if(val < tree->data){
-        search(tree->left, val);
-    }
-    else if(val > tree->data){
-        search(tree->right, val);
-
-    } 
-
-    else if(val == tree->data){
-        printf("Found Value! \n");
-        return tree;
-    }
-
+    else return 0;
 } //end search
 
 void print_inorder(node * tree)
@@ -161,13 +140,23 @@ void print_inorder(node * tree)
     }
 } // end print_inorder
 
-void print_postorder(node * tree){
-    if (tree){
-        print_postorder(tree->left);
-        print_postorder(tree->right);
-        printf("%d\n",tree->data);
-    }
-} // end print_postorder
+/* void print_postorder(node * tree){ */
+/*     if (tree){ */
+/*         print_postorder(tree->left); */
+/*         print_postorder(tree->right); */
+/*         printf("%d\n",tree->data); */
+/*     } */
+/* } // end print_postorder */
+
+void init(){
+    stack_element new_element;
+    node *root = 0;
+    s.top = s.top + 1;
+    new_element.name = 'o';
+    new_element.root = insert(root, 8);
+    s.stk[s.top] = new_element;
+
+} // end init
 
 void menu(){
     printf(
@@ -177,20 +166,15 @@ void menu(){
            "(A)dd: Add a symbol to the binary tree on the top of the stack.\n"
            "(S)earch: Search for a symbol.\n"
            "(Q)uit: Quit this program.\n"
-           "\n"
            );
 
 } // end menu
 
 main(){
-
     char input;
     int input_tree;
-    s.top = -1;
-
     node *root;
-    node *tmp;  // delete???
-    root = NULL;
+    s.top = -1;
     init();
 
     while(1){
@@ -207,21 +191,28 @@ main(){
         case 'A':
             printf ("Enter the element to be inserted.\n");
             scanf("%d", &input_tree);
-            insert(root, input_tree);
-            /* print_postorder(root); // stack not init 'O' = 8 correctly. */
-            /* print_inorder(root); // stack not init 'O' = 8 correctly. */
+            printf("\n");
+            s.stk[s.top].root = insert(s.stk[s.top].root, input_tree);
+            printf("In Order Elements. \n");
+            print_inorder(s.stk[s.top].root);
             break;
         case 'S':
             printf ("Enter the element to be searched.\n");
             scanf("%d", &input_tree);
-            search(root, input_tree);
-            break;
+            int i = s.top;
+            for(i; i >= 0; i--){
+                if(search(s.stk[i].root, input_tree)){
+                    printf("Item Found: Tree %c.\n", s.stk[i].name);
+                    break;
+                }else{
+                    printf("Item not found: Tree %c.\n");
+                }
+            } 
         case 'Q':
             return 0; // Quit Program Sucessfully
             break;
-        default:
-            ; // 
-
+        default: printf("Input Not Recognized.\n");
+            
         } // end switch
 
         display(); // Display Stack
